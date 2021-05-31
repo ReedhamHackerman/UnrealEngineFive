@@ -30,7 +30,7 @@ public:
 	float BaseLookUpRate;
 
 protected:
-
+	 bool IsDead;
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 

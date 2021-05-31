@@ -26,6 +26,8 @@ AUnrealEngineFiveCharacter::AUnrealEngineFiveCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
+	//is not Dead
+	 IsDead = false;
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
@@ -98,6 +100,7 @@ void AUnrealEngineFiveCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVe
 		StopJumping();
 }
 
+
 void AUnrealEngineFiveCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
@@ -112,17 +115,23 @@ void AUnrealEngineFiveCharacter::LookUpAtRate(float Rate)
 
 void AUnrealEngineFiveCharacter::MoveForward(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if (!IsDead)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		if ((Controller != nullptr) && (Value != 0.0f))
+		{
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(Direction, Value);
+			// get forward vector
+			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			AddMovementInput(Direction, Value);
+		}
 	}
+	
 }
+
+
 
 void AUnrealEngineFiveCharacter::MoveRight(float Value)
 {
